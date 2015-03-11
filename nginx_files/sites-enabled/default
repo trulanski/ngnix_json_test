@@ -1,20 +1,16 @@
-
 ## Basic reverse proxy server ##
 
 
-## backend for servers ##
 upstream serversapi  {
       server servers-api.va.3sca.net:80; 
 }
-## datacenters backend ##
 upstream datacenters  {
       server datacenters-api.va.3sca.net:80; 
 }
 
 
-## Start www.example.com ##
 server {
-    listen       192.168.33.10:80;
+    listen       *:80;
     server_name  www.example.com;
 
     access_log  /var/log/nginx/www.example.access.log;
@@ -22,7 +18,6 @@ server {
     root   /usr/share/nginx/html;
     index  index.html index.htm;
 
-    ## send request back to apache1 ##
     location /servers/ {
 	    proxy_pass  http://servers-api.va.3sca.net/servers/;
       	    proxy_cache my-cache;
@@ -46,4 +41,3 @@ server {
             proxy_cache_valid  404      1m;
     }
 }
-## END static.example.com  ##

@@ -8,11 +8,15 @@ RUN \
   add-apt-repository -y ppa:nginx/stable && \
   apt-get update && \
   apt-get install -y nginx && \
+  mkdir -p /var/www/cache/tmp && \
+  chmod -R 777 /var/www/cache/ && \
+  chown -R www-data:www-data /var/www/cache/ 
+ 
 
 # Add files.
-ADD /tmp/nginx_files/sites-enabled/default /etc/nginx/sites-enabled/default
-ADD /tmp/nginx_files/nginx.conf /etc/nginx/nginx.conf
-ADD /tmp/nginx_files/htpasswd /etc/nginx/htpasswd
+COPY nginx_files/sites-enabled/default /etc/nginx/sites-enabled/default
+COPY nginx_files/nginx.conf /etc/nginx/nginx.conf
+COPY nginx_files/htpasswd /etc/nginx/htpasswd
 
 # Define working directory.
 WORKDIR /etc/nginx
